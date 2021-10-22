@@ -1,6 +1,10 @@
 const express = require('express')
 const app = express()
 
+// ejs settings
+const ejs = require("ejs")
+app.set("view engine", "ejs")
+
 app.use(express.static("public"))
 app.use(express.urlencoded({
   extended: true
@@ -11,7 +15,6 @@ app.use(express.json())
 let MongoClient = require('mongodb').MongoClient;
 let url = "mongodb+srv://admin:uzunburunmurat@cluster0.suejd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 let db;
-
 // Initialize connection once
 MongoClient.connect(url, function (err, database) {
   if (err) throw err;
@@ -20,38 +23,62 @@ MongoClient.connect(url, function (err, database) {
   console.log("database connected")
 });
 
-function addImage(data){
-    let dbo = db.db("test-pca");
-    dbo.collection("photos").insertOne(data, function(err, res) {
-      if (err) throw err;
-      console.log("1 image inserted");
-    });
+function addImage(data) {
+
 }
 
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/view/index.html")
+  let photos
+
+  // find all images
+  const promise = new Promise(function (resolve, reject) {
+    let dbo = db.db("test-pca");
+    dbo.collection("photos").find({}).toArray(function (err, result) {
+      if (err) throw err;
+      photos = result
+      resolve("cozuldu")
+    });
+  })
+
+  promise.then(message => {
+    res.render("index", {
+      photos: photos
+    })
+  })
 })
 
 app.get("/index.html", function (req, res) {
-  res.sendFile(__dirname + "/view/index.html")
+  res.render("index")
 })
 
 app.get("/about.html", function (req, res) {
-  res.sendFile(__dirname + "/view/about.html")
+  res.render("about")
 })
 
 app.get("/contact.html", function (req, res) {
-  res.sendFile(__dirname + "/view/contact.html")
+  res.render("contact")
 })
 
 app.get("/video-page.html", function (req, res) {
-  res.sendFile(__dirname + "/view/video-page.html")
+  res.render("video-page")
 })
 
 app.post("/photos", async function (req, res) {
-  console.log(req.body)
-  await addImage(req.body)
-  res.redirect("/")
+
+  // add image
+  const promise = new Promise(function (resolve, reject) {
+    let dbo = db.db("test-pca");
+    dbo.collection("photos").insertOne(req.body, function (err, res) {
+      if (err) throw err;
+      console.log("1 image inserted");
+      resolve("OK")
+    });
+  })
+
+  promise.then(message => {
+    res.redirect("/")
+  })
+  
 })
 
 
