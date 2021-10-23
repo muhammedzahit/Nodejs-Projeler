@@ -44,9 +44,6 @@ https://templatemo.com/tm-552-video-catalog
                                     </button>
                                     <div class="collapse navbar-collapse tm-nav" id="navbar-nav">
                                         <ul class="navbar-nav text-uppercase">
-                                            <li class="nav-item active">
-                                                <a class="nav-link tm-nav-link" href="#">Videos <span class="sr-only">(current)</span></a>
-                                            </li>
                                             <li class="nav-item">
                                                 <a class="nav-link tm-nav-link" href="about.html">About</a>
                                             </li>
@@ -91,7 +88,7 @@ https://templatemo.com/tm-552-video-catalog
                         <% for (let i=0; i<photos.length; i++) { %>
                         <div class="col-lg-4 col-md-6 col-sm-12 tm-catalog-item">
                             <div class="position-relative tm-thumbnail-container">
-                                <img src="img/tn-01.jpg" alt="Image" class="img-fluid tm-catalog-item-img">    
+                                <img src="<%= photos[i].image %>" alt="Image" class="img-fluid tm-catalog-item-img">    
                                 <a href="/video-page.html/<%= photos[i]._id %>" class="position-absolute tm-img-overlay">
                                     <i class="fas fa-play tm-overlay-icon"></i>
                                 </a>

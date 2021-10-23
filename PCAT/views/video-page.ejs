@@ -19,14 +19,19 @@ https://templatemo.com/tm-552-video-catalog
 -->
 <body>
 	<div class="tm-page-wrap mx-auto">
-
+		<div class="col-7 col-md-4">
+			<a href="/index.html" class="tm-bg-black text-center tm-logo-container">
+				<i class="fas fa-video tm-site-logo mb-3"></i>
+				<h1 class="tm-site-name">Video Catalog</h1>
+			</a>
+		</div>
 		<!-- Page content -->
 		<div class="container-fluid">
 			<div class="mx-auto tm-content-container">
 				<main>
 					<div class="row mb-5 pb-4">
 						<div class="col-12">
-							<img src="/img/tn-01.jpg" alt="Image" class="img-fluid tm-catalog-item-img">
+							<img src="/<%= photo.image %>" alt="Image" class="img-fluid tm-catalog-item-img">
 						</div>
 					</div>
 					<div class="row mb-5 pb-5">
@@ -39,7 +44,9 @@ https://templatemo.com/tm-552-video-catalog
 						</div>
 					</div>
 				</main>
-
+				<div>
+					<a  href="/edit/<%=photo._id%>" class="btn btn-primary p-0 tm-btn-animate tm-btn-download tm-icon-download"><span>Edit Informations</span></a>	
+				</div>	
 			</div> <!-- .tm-content-container -->
 		</div>
 	</div>

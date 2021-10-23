@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Catalog</title>
-    <link rel="stylesheet" href="fontawesome/css/all.min.css"> <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" href="/fontawesome/css/all.min.css"> <!-- https://fontawesome.com/ -->
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
     <!-- https://fonts.google.com/ -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/templatemo-video-catalog.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/templatemo-video-catalog.css">
 </head>
 <!--
 
@@ -98,19 +98,15 @@ https://templatemo.com/tm-552-video-catalog
                     <div class="mx-auto pb-3 tm-about-text-container px-3">
                         <div class="row">
                             <div class="col-lg">
-                                <form id="contact-form" action="/photos" method="POST" class="tm-contact-form" enctype="multipart/form-data">
+                                <form id="contact-form" action="/photos/<%=photo._id%>?_method=PUT" method="POST" class="tm-contact-form">
                                     <div class="form-group">
                                         <input id="title_input" type="text" name="title" class="form-control rounded-0"
-                                            placeholder="Title" required="" />
+                                            placeholder="" required="" / value="<%= photo.title %>">
                                     </div>
                                     <div class="form-group">
                                         <textarea id="desc_input" rows="8" name="description"
-                                            class="form-control rounded-0" placeholder="Description"
-                                            required=""></textarea>
-                                    </div>
-
-                                    <div class="form_group mb-0">
-                                        <input class="input" type="file" name = "image" class="form-control-file rounded-0">
+                                            class="form-control rounded-0" placeholder=""
+                                            required="" type="text"><%= photo.description %></textarea>
                                     </div>
 
                                     <div class="form-group mb-0">

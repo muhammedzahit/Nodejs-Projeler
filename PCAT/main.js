@@ -1,5 +1,7 @@
 const express = require('express')
 const app = express()
+const fileUpload = require("express-fileupload")
+const methodOverride = require('method-override')
 
 // ejs settings
 const ejs = require("ejs")
@@ -10,6 +12,8 @@ app.use(express.urlencoded({
   extended: true
 }))
 app.use(express.json())
+app.use(fileUpload())
+app.use(methodOverride('_method'))
 
 // connect to database
 let MongoClient = require('mongodb').MongoClient;
@@ -24,9 +28,6 @@ MongoClient.connect(url, function (err, database) {
   console.log("database connected")
 });
 
-function addImage(data) {
-
-}
 
 app.get("/", function (req, res) {
   let photos
@@ -72,6 +73,7 @@ app.get("/video-page.html/:id", function (req, res) {
   })
 
   promise.then(message => {
+    console.log(photo)
     res.render("video-page", {
       photo: photo
     })
@@ -79,11 +81,17 @@ app.get("/video-page.html/:id", function (req, res) {
 })
 
 app.post("/photos", async function (req, res) {
+  console.log(req.files.image)
+
+  let uploadPath = "uploads/" + req.files.image.name
+
+  body_ = JSON.parse(JSON.stringify(req.body))
+  body_.image = uploadPath
 
   // add image
   const promise = new Promise(function (resolve, reject) {
     let dbo = db.db("test-pca");
-    dbo.collection("photos").insertOne(req.body, function (err, res) {
+    dbo.collection("photos").insertOne(body_, function (err, res) {
       if (err) throw err;
       console.log("1 image inserted");
       resolve("OK")
@@ -91,11 +99,49 @@ app.post("/photos", async function (req, res) {
   })
 
   promise.then(message => {
+    req.files.image.mv(uploadPath)
     res.redirect("/")
   })
   
 })
 
+app.put("/photos/:id", (req, res) => {
+  let photo
+  const promise = new Promise(function (resolve, reject) {
+    let dbo = db.db("test-pca");
+    let query = {"_id" : new ObjectId(req.params.id)}
+    let newvalues = { $set: {title: req.body.title, description: req.body.description } };
+    dbo.collection("photos").updateOne( query,newvalues,function(err,res) {
+      if (err) throw err;
+      resolve("cozuldu")
+    });
+  })
+
+  promise.then(message => {
+    console.log("edited")
+    res.redirect(`/video-page.html/${req.params.id}`)
+  })
+
+})
+
+app.get("/edit/:id", (req, res) => {
+  let photo
+  const promise = new Promise(function (resolve, reject) {
+    let dbo = db.db("test-pca");
+    dbo.collection("photos").find({"_id" : new ObjectId(req.params.id)}).toArray(function (err, result) {
+      if (err) throw err;
+      photo = result[0]
+      resolve("cozuldu")
+    });
+  })
+
+  promise.then(message => {
+    console.log(photo)
+    res.render("edit", {
+      photo: photo
+    })
+  })
+})
 
 
 app.listen(3000)
