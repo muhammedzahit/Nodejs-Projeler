@@ -8,6 +8,7 @@ app.set("view engine", "ejs")
 // database connection
 let MongoClient = require('mongodb').MongoClient;
 const { restart } = require('nodemon');
+const { ObjectId } = require('bson');
 let url = "mongodb+srv://admin:uzunburunmurat@cluster0.suejd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 let db;
 // Initialize connection once
@@ -18,11 +19,8 @@ app.use(express.urlencoded({
 }))
 app.use(express.json())
 
-let TEXT
-
 app.get('/', function (req, res) {
     let texts
-    let link
     const promise = new Promise(function (resolve, reject) {
         if (typeof db === "undefined") {
             MongoClient.connect(url, function (err, database) {
@@ -41,10 +39,6 @@ app.get('/', function (req, res) {
             dbo.collection("texts").find({}).toArray(function (err, result) {
                 if (err) throw err;
                 texts = result
-                link = []
-                for (let i = 0; i < result.length; i++) {
-                    link.push("blog_post_" + String(i))
-                }
                 resolve("a")
             });
         })
@@ -54,7 +48,6 @@ app.get('/', function (req, res) {
 
         res.render("index", {
             texts: texts,
-            link: link
         })
     })
 
@@ -72,28 +65,22 @@ app.get('/contact.html', function (req, res) {
     res.render("contact")
 })
 
-app.get("/blog_post_*", function (req, res) {  
-    
-    let index = req.originalUrl.charAt(req.originalUrl.length - 1)
-    console.log(isNaN(index), index)
+app.get("/blog_post/:id", function (req, res) {  
+    console.log(req.params.id)
+    let result_
     const promise = new Promise(function (resolve, reject) {
-        if(isNaN(index)){
-            reject("database baglanma")
-        }
         let dbo = db.db("test-blog");
         console.log("i", req.originalUrl)
-        dbo.collection("texts").find({}).toArray(function (err, result) {
+        dbo.collection("texts").find({"_id" : ObjectId(req.params.id)}).toArray(function (err, result) {
             if (err) throw err;
-            TEXT = result
-            console.log(TEXT)
+            result_ = result[0]
             resolve("cozuldu")
         });
     })
     promise.then(message => {
-        index = Number(index)
-        console.log("text"  ,TEXT[Number(index)])
+        console.log("text"  ,result_)
         res.render("blog_post", {
-            text: TEXT[index]
+            text: result_
         })
     })
 })
