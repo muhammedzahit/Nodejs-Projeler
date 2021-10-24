@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const fileUpload = require("express-fileupload")
 const methodOverride = require('method-override')
+const fs = require("fs")
 
 // ejs settings
 const ejs = require("ejs")
@@ -13,13 +14,15 @@ app.use(express.urlencoded({
 }))
 app.use(express.json())
 app.use(fileUpload())
-app.use(methodOverride('_method'))
+app.use(methodOverride('_method', {
+  methods: ["POST", "GET"]
+}))
 
 // connect to database
 let MongoClient = require('mongodb').MongoClient;
 let url = "mongodb+srv://admin:uzunburunmurat@cluster0.suejd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 let db;
-let ObjectId = require('mongodb').ObjectId; 
+let ObjectId = require('mongodb').ObjectId;
 // Initialize connection once
 MongoClient.connect(url, function (err, database) {
   if (err) throw err;
@@ -65,7 +68,9 @@ app.get("/video-page.html/:id", function (req, res) {
   let photo
   const promise = new Promise(function (resolve, reject) {
     let dbo = db.db("test-pca");
-    dbo.collection("photos").find({"_id" : new ObjectId(req.params.id)}).toArray(function (err, result) {
+    dbo.collection("photos").find({
+      "_id": new ObjectId(req.params.id)
+    }).toArray(function (err, result) {
       if (err) throw err;
       photo = result[0]
       resolve("cozuldu")
@@ -99,19 +104,29 @@ app.post("/photos", async function (req, res) {
   })
 
   promise.then(message => {
-    req.files.image.mv(uploadPath)
-    res.redirect("/")
+    req.files.image.mv(__dirname + "/public/" + uploadPath)
+    setTimeout(() => {
+      res.redirect("/")
+    }, 50);
+    
   })
-  
+
 })
 
 app.put("/photos/:id", (req, res) => {
   let photo
   const promise = new Promise(function (resolve, reject) {
     let dbo = db.db("test-pca");
-    let query = {"_id" : new ObjectId(req.params.id)}
-    let newvalues = { $set: {title: req.body.title, description: req.body.description } };
-    dbo.collection("photos").updateOne( query,newvalues,function(err,res) {
+    let query = {
+      "_id": new ObjectId(req.params.id)
+    }
+    let newvalues = {
+      $set: {
+        title: req.body.title,
+        description: req.body.description
+      }
+    };
+    dbo.collection("photos").updateOne(query, newvalues, function (err, res) {
       if (err) throw err;
       resolve("cozuldu")
     });
@@ -128,7 +143,9 @@ app.get("/edit/:id", (req, res) => {
   let photo
   const promise = new Promise(function (resolve, reject) {
     let dbo = db.db("test-pca");
-    dbo.collection("photos").find({"_id" : new ObjectId(req.params.id)}).toArray(function (err, result) {
+    dbo.collection("photos").find({
+      "_id": new ObjectId(req.params.id)
+    }).toArray(function (err, result) {
       if (err) throw err;
       photo = result[0]
       resolve("cozuldu")
@@ -143,5 +160,34 @@ app.get("/edit/:id", (req, res) => {
   })
 })
 
+app.delete("/delete/:id", (req, res) => {
+  let photo_path
+  const promise = new Promise(function (resolve, reject) {
+    let dbo = db.db("test-pca");
+    dbo.collection("photos").find({
+      "_id": new ObjectId(req.params.id)
+    }).toArray(function (err, result) {
+      if (err) throw err;
+      photo_path = result[0].image
+      resolve("cozuldu")
+    });
+  })
+  promise.then((m) => {
+    return new Promise(function (resolve, reject) {
+        let dbo = db.db("test-pca");
+        dbo.collection("photos").deleteOne({
+          _id: new ObjectId(req.params.id)
+        }, function (err, obj) {
+          if (err) throw err;
+          resolve("silindi")
+        });
+      })
+      .then((m) => {
+        fs.unlinkSync(__dirname + "/public/" +photo_path)
+        res.redirect("/")
+      })
+
+  })
+})
 
 app.listen(3000)
