@@ -56,9 +56,9 @@
             
                 <h2><a href= "/blog_post/<%= texts[i]._id %>" ><%=texts[i].title%></a></h2>
                 
-                <img src="images/templatemo_image_01.jpg" alt="image 1" />
+                <img src="<%=texts[i].image%>" alt=""  width="250" height="250"/>
                 
-                <p><%=texts[i].text %> </p>
+                <p><%=texts[i].text.slice(0,200) %>.......... </p>
                 
             </div>
 

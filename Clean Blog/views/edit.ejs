@@ -2,10 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Clean Blog Post</title>
+<title>Clean Blog - Contact Page</title>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link href="/templatemo_style.css" rel="stylesheet" type="text/css" />
+
 </head>
 <body>
 
@@ -13,10 +14,10 @@
 
 	<div id="templatemo_menu">
                 
-         <ul>
-            <li><a href="/index.html" class="current">Blog</a></li>
-            <li><a href="/contact.html">Contact</a></li>
-        </ul>   	
+        <ul>
+            <li><a href="/index.html">Blog</a></li>
+            <li><a href="/contact.html" class="current">New Story</a></li>
+        </ul>    	
     
     </div> <!-- end of templatemo_menu -->
 
@@ -25,47 +26,45 @@
         <div id="templatemo_header">
         
             <div id="site_title">
-                <h1><a href="#">Clean <strong>Blog</strong><span>Write Your Story</span></a></h1>
+                <h1><a href="#">Clean <strong>Blog</strong><span>Write Your Story :)</span></a></h1>
             </div><!-- end of site_title -->
             
-        </div> <!-- end of header -->  
-        
-        <div id="templatemo_sidebar">
-    	
-            <div id="templatemo_rss">
-            
-                <a href="#">SUBSCRIBE NOW <br /><span>to our rss feed</span></a>
-                
-            </div>
             
         </div> <!-- end of templatemo_sidebar --> 
     
     </div> <!-- end of templatemo_left_column -->
     
     <div id="templatemo_right_column">
-        
+    
         <div id="templatemo_main">
         
-            <div class="post_section">
+        	<h1>Write A New Story</h1>
 
-                <h2> <%= text.title %> </h2>
+            <div id="contact_form">
                 
-                <a href="#"><img src="/<%=text.image%>" alt="image" width="400" height="250"/></a>
+                <form method="post" name="contact" action="/edit/<%=text._id%>?_method=PUT" enctype="multipart/form-data">
                 
-                <p> <%= text.text %> </p>
+                    <input type="hidden" name="post" value="Send" />
+                    <label for="author">Title:</label> <input value="<%=text.title%>" type="text" id="title" name="title" class="required input_field" />
+                    <div class="cleaner_h10"></div>
+                    
+                    <label for="text">Story:</label> <textarea id="text" name="text" rows="0" cols="0" class="required"><%=text.text%></textarea>
+                    <div class="cleaner_h10"></div>
+                    
+                    <br><br><br>
+
+                    <input type="submit" class="submit_btn" name="submit" id="submit" value="Send" />
+                    <input type="reset" class="submit_btn" name="reset" id="reset" value="Reset" />
                 
-		    </div>
-            <div>
-                    <a href="/edit/<%=text._id%>"><span>Edit Story</span></a>	
-					<a  onclick="return confirm('Are You Sure')"  href="/delete/<%=text._id%>?_method=DELETE"><span>Delete Story</span></a>	
-            </div>
+              </form>
             
-            
-		</div> <!-- end of main -->
+            </div> 
+        
+        </div> <!-- end of main -->
+        <div class="cleaner"></div>
+    </div> <!-- end of right column -->
     
-  <div class="cleaner"></div>
-  </div> 
-    <!-- end of templatemo_main -->
+    
   <div class="cleaner_h20"></div>
   
   	<div id="templatemo_footer">
