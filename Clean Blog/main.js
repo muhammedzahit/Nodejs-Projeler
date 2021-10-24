@@ -117,6 +117,7 @@ app.post("/new_story", function (req, res) {
         await req.files.image.mv(__dirname + "/public/" + upload_path)
         res.redirect("/")
     })
+    console.log("a")
 
 })
 
