@@ -1,0 +1,76 @@
+		<%- include('./partials/header.ejs') %>
+
+		<div class="container">
+			<div class="section-title text-center">
+				<h3 class="mt-5">NEW COURSE</h3>
+
+				<div class="row">
+					<div class="col-xl-12 col-md-12 col-sm-12">
+						<div class="contact_form">
+							<div id="message"></div>
+							<form
+								class=""
+								name="contactform"
+								method="post"
+								action="/course"
+							>
+								<div class="row row-fluid">
+									<div class="offset-1 col-lg-10 col-md-10 col-sm-10">
+										<input
+											type="text"
+											name="title"
+											id="name"
+											class="form-control"
+											placeholder="Title"
+										/>
+									</div>
+									<div class="offset-1 col-lg-10 col-md-10 col-sm-10">
+										<input
+											type="text"
+											name="description"
+											id="description"
+											class="form-control"
+											placeholder="description"
+										/>
+									</div>
+									<div class="offset-1 col-lg-10 col-md-10 col-sm-10">
+										<input
+											type="text"
+											name="date"
+											id="date"
+											class="form-control"
+											placeholder="date"
+										/>
+									</div>
+                                    <div class="offset-1 col-lg-10 col-md-10 col-sm-10">
+										<input
+											type="text"
+											name="category"
+											id="category"
+											class="form-control"
+											placeholder="category"
+										/>
+									</div>
+									<div class="offset-1 col-lg-10 col-md-10 col-sm-10">
+										<button
+											type="submit"
+											value="LOGIN"
+											id="submit"
+											class="btn btn-light btn-radius btn-brd grd1 btn-block"
+										>
+                                            NEW COURSE
+										</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<!-- end col -->
+				</div>
+				<!-- end row -->
+			</div>
+			<!-- end container -->
+		</div>
+		<!-- end container -->
+
+		<%- include('./partials/footer.ejs') %>

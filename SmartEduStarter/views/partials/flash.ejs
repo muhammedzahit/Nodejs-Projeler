@@ -1,0 +1,12 @@
+<% if(flashMessage){ %>	
+    <% // console.log(flashMessage, "ii") %>
+    <% if(flashMessage.success){ %>	
+        <div class="alert alert-success" role="alert">
+            <p><%= flashMessage.success %></p>
+        </div>
+    <% } else if(flashMessage.error) { %>	
+        <div class="alert alert-danger" role="alert">
+            <p><%= flashMessage.error %></p>
+        </div>
+    <% } %>	
+<% } %>

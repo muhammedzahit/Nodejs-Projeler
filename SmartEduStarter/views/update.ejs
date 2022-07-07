@@ -1,0 +1,80 @@
+		<%- include('./partials/header.ejs') %>
+
+		<div class="container">
+			<div class="section-title text-center">
+				<h3 class="mt-5">NEW COURSE</h3>
+
+				<div class="row">
+					<div class="col-xl-12 col-md-12 col-sm-12">
+						<div class="contact_form">
+							<div id="message"></div>
+							<form
+								class=""
+								name="contactform"
+								method="post"
+								action="/courses/<%= course._id %>?_method=PUT"
+							>
+								<div class="row row-fluid">
+									<div class="offset-1 col-lg-10 col-md-10 col-sm-10">
+										<input
+											type="text"
+											name="title"
+											id="name"
+											class="form-control"
+											value='<%= course.title %>'
+										/>
+									</div>
+									<div class="offset-1 col-lg-10 col-md-10 col-sm-10">
+										<input
+											type="text"
+											name="description"
+											id="description"
+											class="form-control"
+											value='<%= course.description %>'
+										/>
+									</div>
+									<div class="offset-1 col-lg-10 col-md-10 col-sm-10">
+										<input
+											type="text"
+											name="date"
+											id="date"
+											class="form-control"
+											value='<%= course.date %>'
+										/>
+									</div>
+									<select class="form-control" name="category">
+										<% for (let i=0; i< categories.length; i++) { %>
+											<% if(course.category.name === categories[i].name) {%>
+												<option value="<%= categories[i]._id %>" selected="selected">
+													<%= categories[i].name %>
+												</option>
+											<% } else {%>
+												<option value="<%= categories[i]._id %>">
+													<%= categories[i].name %>
+												</option>
+											<% } %>
+										<% } %>
+									</select>
+									<div class="offset-1 col-lg-10 col-md-10 col-sm-10">
+										<button
+											type="submit"
+											value="NEW"
+											id="submit"
+											class="btn btn-light btn-radius btn-brd grd1 btn-block"
+										>
+                                            UPDATE COURSE
+										</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<!-- end col -->
+				</div>
+				<!-- end row -->
+			</div>
+			<!-- end container -->
+		</div>
+		<!-- end container -->
+
+		<%- include('./partials/footer.ejs') %>
