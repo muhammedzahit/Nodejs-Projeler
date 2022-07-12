@@ -1,0 +1,22 @@
+type Comment{
+        id : ID!
+        text : String
+        post : Post
+        post_id : ID
+}
+
+type Mutation {
+    addNewComment(text : String!, post_id : ID, post_title : String) : Comment
+    updateComment(data : UpdateCommentInput!) : Comment
+    deleteComment(id : ID!) : Comment
+    deleteAllComments : Int
+}
+
+type Query{
+    comments : [Comment],
+    comment(id : ID!) : Comment
+}
+
+type Subscription{
+    watchNewComment (post_id : ID!) : Comment
+}

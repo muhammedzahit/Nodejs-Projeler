@@ -1,0 +1,24 @@
+type User {
+	id: ID!
+	fullName: String
+	posts: [Post]
+	photoUrl : String
+}
+
+type Mutation{
+	addNewUser(fullName : String!, photoUrl:String!) : User
+    updateUser(data : UpdateUserInput!) : User
+    deleteUser(id : ID!) : User
+    deleteAllUsers : Int
+}
+
+type Subscription{
+	userCreated: User!
+	userCount: Int!
+	watchUserDetailChanged(id: ID!): User
+}
+
+type Query{
+	users : [User],
+    user(id : ID!) : User,
+}

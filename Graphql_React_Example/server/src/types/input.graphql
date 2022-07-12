@@ -1,0 +1,17 @@
+input UpdateCommentInput {
+	id: ID!
+	text: String
+	post_id: ID
+}
+
+input UpdatePostInput {
+	id: ID!
+	title: String
+	user_id: ID
+}
+
+input UpdateUserInput {
+	id: ID!
+	fullName: String
+	photoUrl : String
+}
